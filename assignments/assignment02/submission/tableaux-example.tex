@@ -1,0 +1,28 @@
+%% BEGIN tableaux-example.tex
+
+\documentclass[11pt,leqno,fleqn]{article}
+
+\usepackage{synttree} 
+\usepackage{bm}       % unlike \boldmath
+                      % \bm can be used anywhere within math mode
+
+\begin{document}
+
+We apply the tableaux method to the set
+$\Gamma = \{p\land q,\neg p\lor \neg r\}$:
+
+\begin{center}
+\synttree{8 \branchheight{.45in} \childsidesep{5em} \childattachsep{1em}}
+[ $\Gamma = \{p\land q,\neg p\lor \neg r\}$ 
+   [ $p\land q$
+    [ $\neg p\lor \neg r$ 
+      [ $\bm{\neg p}$ 
+        [ $\bm p$ [ $\bm{q}$ ]]]
+      [ $\bm{\neg r}$ [ $\bm p$
+              [ $\bm{q}$] ] ] 
+   ]]]
+\end{center}
+
+\end{document}
+
+%% END tableaux-example.tex
