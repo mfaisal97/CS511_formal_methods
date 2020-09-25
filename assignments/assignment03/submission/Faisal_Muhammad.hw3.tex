@@ -1,0 +1,72 @@
+%% to produce a PDF copy, issue the following command:
+%%
+%%     pdflatex propositional-logic-examples.tex
+%%
+%% in the same directory containing the LaTeX style files:
+%%
+%%     prooftree.sty  and  boxproof.sty
+
+\documentclass[11pt,leqno,fleqn]{article}
+
+\usepackage{graphicx} 
+\usepackage{times}              % better fonts for mathematical symbols
+\usepackage{bm}                 % unlike \boldmath,
+                                % \bm can be used anywhere within math mode
+\usepackage[scaled=0.9]{helvet} % makes text a little smaller throughout,
+                                % but not the text in math mode.
+\usepackage{prooftree}
+\usepackage{boxproof}
+
+\usepackage{synttree} 
+% \usepackage{bm}
+
+
+\usepackage{hyperref}
+
+
+
+\setlength\hoffset{-5pt}      % horizontal offset, to move text horizontally
+\setlength{\textwidth}{4.5in} % try different widths
+\setlength\voffset{-5pt}      % vertical offset, to move text vertically
+\setlength{\textheight}{7in}  % try different heights
+
+\newcommand{\Hide}[1]{}             % use \Hide{bla bla} to hide ``bla bla''
+\newcommand{\code}[1]{\texttt{#1}}  % use \code{...} to produce ASCII chars
+\newcommand{\Intro}[1]{{#1}{\textrm{i}}}
+\newcommand{\Elim}[1]{{#1}{\textrm{e}}}
+
+\title{CS511 Formal Methods: Homework 03}
+\author{Muhammad Faisal} 
+\date{} % omit date
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 01}
+
+
+\section{Problem 02}
+
+
+\section{Problem 03}
+
+
+\section{Problem 04}
+
+
+\section{Problem 05}
+\href{https://github.com/mickey-me/CS511_formal_methods/blob/master/assignments/assignment02/P5.smt2}{Click here for Code file}
+or copy the following link:
+\url{https://github.com/mickey-me/CS511_formal_methods/blob/master/assignments/assignment02/P5.smt2}
+
+
+\section{Problem 06}
+\href{https://github.com/mickey-me/CS511_formal_methods/blob/master/assignments/assignment02/P6.py}{Click here for Code file}
+or copy the following link:
+\url{https://github.com/mickey-me/CS511_formal_methods/blob/master/assignments/assignment02/P6.py}
+
+
+
+\end{document}
+
