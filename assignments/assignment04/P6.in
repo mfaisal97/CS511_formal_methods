@@ -1,0 +1,33 @@
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+formulas(assumptions).
+
+exists x (LivesIn(x,D) -> Killed(x,A)).
+
+all x (LivesIn(x,D) -> (x==A)|(x==B)|(x==C)).
+all x (((x==A)|(x==B)|(x==C)) -> LivesIn(x,D)).
+
+all x all y (Killed(x,y) -> (Hates(x,y) & -RicherThan(x,y))).
+
+all x (Hates(A,x) -> -Hates(C,x)).
+
+all x (-Hates(A,x) -> (x==B)).
+
+all x (-RicherThan(x,A) -> Hates(B,x)).
+
+all x Hates(A,x) -> Hates(B,x).
+
+all x (-(exists y (Hates(x,y)))).
+
+A!=B.
+
+end_of_list.
+
+formulas(goals).
+% what to go here?
+end_of_list.
