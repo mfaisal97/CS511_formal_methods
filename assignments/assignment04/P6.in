@@ -7,27 +7,38 @@ assign(stats,none).
 
 formulas(assumptions).
 
-exists x (LivesIn(x,D) -> Killed(x,A)).
+all y all u exists x (D(u) & A(y) & LivesIn(x,u) -> Killed(x,y)).
 
-all x (LivesIn(x,D) -> (x==A)|(x==B)|(x==C)).
-all x (((x==A)|(x==B)|(x==C)) -> LivesIn(x,D)).
+all x all u ((A(x) | B(x) | C(x)) & D(u) -> LivesIn(x,u)).
+all x all u ( D(u) & LivesIn(x,u) -> (A(x) | B(x) | C(x))).
 
 all x all y (Killed(x,y) -> (Hates(x,y) & -RicherThan(x,y))).
 
-all x (Hates(A,x) -> -Hates(C,x)).
+all x all y all z (A(x) & C(z) -> -(Hates(x,y) <-> Hates(z,y))).
 
-all x (-Hates(A,x) -> (x==B)).
+all x all y ( A(x) & B(y) -> -Hates(x,y)).
+all x all y ( A(x) & -B(y) -> Hates(x,y)).
 
-all x (-RicherThan(x,A) -> Hates(B,x)).
+all x all y all z ( A(y) & B(z) -> (-RicherThan(x,y)-> Hates(z,x)) ).
 
-all x Hates(A,x) -> Hates(B,x).
+all x all y all z ((A(y) & B(z)) -> (Hates(y,x) -> Hates(z,x))).
 
-all x (-(exists y (Hates(x,y)))).
+all x exists y (-Hates(x,y)).
 
-A!=B.
+all x -(A(x)<->B(x)).
 
 end_of_list.
 
 formulas(goals).
-% what to go here?
+
+% Charles is the killer
+all x all y (C(x) & A(y) -> Killed(x,y)).
+
+%all x all y (A(x) & B(y) -> -Hates(x,y)) .
+%all x all y (A(x) & C(y) -> Hates(x,y)) .
+
+%all x all y (B(x) & A(y) -> Hates(x,y)) .
+%all x all y (B(x) & B(y) -> -Hates(x,y)) .
+%all x all y (B(x) & C(y) -> Hates(x,y)).
+
 end_of_list.
