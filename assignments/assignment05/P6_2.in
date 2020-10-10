@@ -1,0 +1,29 @@
+  
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+
+formulas(assumptions).
+
+% calculating the power res for power3_new
+phi_b(in_b_0, out_b_0) <->
+(out_b_0 = in_b_0 * (in_b_0 * in_b_0)).
+
+% calculating the power res for power3_inc
+phi_c(in_c_0, out_c_3) <->
+((out_c_0 = in_c_0) &
+(out_c_1 = out_c_0 * in_c_0) &
+(out_c_2 = out_c_1 * in_c_0) &
+(out_c_3 = out_c_2 * in_c_0)).
+
+end_of_list.
+formulas(goals).
+
+% comparing the results
+(phi_b(x,xz) & phi_c(x,xy)) -> (xz = xy).
+
+end_of_list.
