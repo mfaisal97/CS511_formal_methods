@@ -1,0 +1,20 @@
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+% Proving that psi leads to psi_1
+% prover9 < P5_1.in
+
+formulas(assumptions).
+
+exists c ((all x (-R(x,c))) &  (exists y (R(x,y)))) -> exists v exists w exists y (R(w,y) & R(v,y) & (v!=y)).
+
+end_of_list.
+formulas(goals).
+
+exists c ((all x (-R(x,c))) &  (exists y (R(x,y))) & (all x all y all z ( ((-R(x,y)) & (R(x,z))) | (y!=z ) | (y!=c) | (z!=c) )) ) -> exists v exists w exists y (R(w,y) & R(v,y) & (v!=y)).
+
+end_of_list.
