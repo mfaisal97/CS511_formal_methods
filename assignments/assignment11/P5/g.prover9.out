@@ -1,0 +1,189 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 826 was started by mickey-ubuntu on DESKTOP-THVT2TT,
+Tue Dec  1 06:34:03 2020
+The command was "prover9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+formulas(assumptions).
+PartialOrder(x,x).
+PartialOrder(x,y) & PartialOrder(y,x) -> x = y.
+PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z).
+PartialOrder(b,x).
+PartialOrder(x,a).
+PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z).
+PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y).
+GLB(x,LUB(y,z)) = LUB(GLB(x,y),GLB(x,z)).
+LUB(x,GLB(y,z)) = GLB(LUB(x,y),LUB(x,z)).
+PartialOrder(GLB(x,y),z) <-> PartialOrder(x,Heyting(y,z)).
+end_of_list.
+
+formulas(goals).
+Heyting(x,x) = a.
+GLB(x,Heyting(x,y)) = GLB(x,y).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+2 PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z) # label(non_clause).  [assumption].
+3 PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z) # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+5 PartialOrder(GLB(x,y),z) <-> PartialOrder(x,Heyting(y,z)) # label(non_clause).  [assumption].
+6 Heyting(x,x) = a # label(non_clause) # label(goal).  [goal].
+7 GLB(x,Heyting(x,y)) = GLB(x,y) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Auto_denials:
+  % assign(max_proofs, 2).  % (Horn set with more than one neg. clause)
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, PartialOrder ]).
+Function symbol precedence:  function_order([ a, b, c1, c2, c3, GLB, LUB, Heyting ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(hyper_resolution).  % (nonunit Horn with equality)
+    % set(hyper_resolution) -> set(pos_hyper_resolution).
+  % set(neg_ur_resolution).  % (nonunit Horn with equality)
+  % assign(para_lit_limit, 3).  % (nonunit Horn with equality)
+
+Auto_process settings:  (no changes).
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 14.
+% Level of proof is 4.
+% Maximum clause weight is 10.000.
+% Given clauses 19.
+
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+5 PartialOrder(GLB(x,y),z) <-> PartialOrder(x,Heyting(y,z)) # label(non_clause).  [assumption].
+6 Heyting(x,x) = a # label(non_clause) # label(goal).  [goal].
+8 PartialOrder(x,x).  [assumption].
+9 -PartialOrder(x,y) | -PartialOrder(y,x) | y = x.  [clausify(1)].
+12 PartialOrder(x,a).  [assumption].
+17 -PartialOrder(x,GLB(y,z)) | PartialOrder(x,z).  [clausify(4)].
+22 -PartialOrder(GLB(x,y),z) | PartialOrder(x,Heyting(y,z)).  [clausify(5)].
+24 Heyting(c1,c1) != a.  [deny(6)].
+42 PartialOrder(GLB(x,y),y).  [resolve(17,a,8,a)].
+57 -PartialOrder(a,Heyting(c1,c1)).  [ur(9,b,12,a,c,24,a)].
+66 -PartialOrder(GLB(a,c1),c1).  [ur(22,b,57,a)].
+67 $F.  [resolve(66,a,42,a)].
+
+============================== end of proof ==========================
+
+% Disable descendants (x means already disabled):
+ 24 57 65 66 68 69 70 71
+
+% Operation LUB is commutative; C redundancy checks enabled.
+
+% Operation GLB is commutative; C redundancy checks enabled.
+
+Low Water (keep): wt=27.000, iters=6722
+
+Low Water (keep): wt=25.000, iters=6807
+
+Low Water (keep): wt=23.000, iters=6676
+
+Low Water (keep): wt=21.000, iters=6747
+
+Low Water (keep): wt=20.000, iters=6826
+
+Low Water (keep): wt=19.000, iters=6778
+
+Low Water (keep): wt=18.000, iters=6676
+
+Low Water (keep): wt=17.000, iters=6690
+
+Low Water (keep): wt=16.000, iters=6730
+
+Low Water (keep): wt=15.000, iters=6706
+
+============================== PROOF =================================
+
+% Proof 2 at 1.27 (+ 0.02) seconds.
+% Length of proof is 26.
+% Level of proof is 7.
+% Maximum clause weight is 11.000.
+% Given clauses 258.
+
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+2 PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z) # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+5 PartialOrder(GLB(x,y),z) <-> PartialOrder(x,Heyting(y,z)) # label(non_clause).  [assumption].
+7 GLB(x,Heyting(x,y)) = GLB(x,y) # label(non_clause) # label(goal).  [goal].
+8 PartialOrder(x,x).  [assumption].
+9 -PartialOrder(x,y) | -PartialOrder(y,x) | y = x.  [clausify(1)].
+10 -PartialOrder(x,y) | -PartialOrder(y,z) | PartialOrder(x,z).  [clausify(2)].
+16 -PartialOrder(x,GLB(y,z)) | PartialOrder(x,y).  [clausify(4)].
+17 -PartialOrder(x,GLB(y,z)) | PartialOrder(x,z).  [clausify(4)].
+18 PartialOrder(x,GLB(y,z)) | -PartialOrder(x,y) | -PartialOrder(x,z).  [clausify(4)].
+22 -PartialOrder(GLB(x,y),z) | PartialOrder(x,Heyting(y,z)).  [clausify(5)].
+23 PartialOrder(GLB(x,y),z) | -PartialOrder(x,Heyting(y,z)).  [clausify(5)].
+25 GLB(c2,Heyting(c2,c3)) != GLB(c2,c3).  [deny(7)].
+41 PartialOrder(GLB(x,y),x).  [resolve(16,a,8,a)].
+42 PartialOrder(GLB(x,y),y).  [resolve(17,a,8,a)].
+56 PartialOrder(GLB(Heyting(x,y),x),y).  [resolve(23,b,8,a)].
+216 PartialOrder(x,Heyting(y,x)).  [resolve(41,a,22,a)].
+257 PartialOrder(GLB(x,y),GLB(y,x)).  [hyper(18,b,42,a,c,41,a)].
+406 PartialOrder(GLB(x,y),Heyting(z,y)).  [hyper(10,a,42,a,b,216,a)].
+466 PartialOrder(GLB(Heyting(x,y),x),GLB(x,y)).  [hyper(18,b,42,a,c,56,a)].
+1532 GLB(x,y) = GLB(y,x).  [hyper(9,a,257,a,b,257,a)].
+1607 PartialOrder(GLB(x,Heyting(x,y)),GLB(x,y)).  [back_rewrite(466),rewrite([1532(2)])].
+2145 PartialOrder(GLB(x,y),GLB(x,Heyting(z,y))).  [hyper(18,b,41,a,c,406,a)].
+20011 -PartialOrder(GLB(c2,c3),GLB(c2,Heyting(c2,c3))).  [ur(9,b,1607,a,c,25,a)].
+20012 $F.  [resolve(20011,a,2145,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=258. Generated=61426. Kept=20002. proofs=2.
+Usable=225. Sos=17601. Demods=64. Limbo=52, Disabled=2140. Hints=0.
+Megabytes=23.22.
+User_CPU=1.27, System_CPU=0.02, Wall_clock=2.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 2 proofs.
+
+Process 826 exit (max_proofs) Tue Dec  1 06:34:05 2020

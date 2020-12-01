@@ -1,0 +1,120 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 483 was started by mickey-ubuntu on DESKTOP-THVT2TT,
+Tue Dec  1 05:50:00 2020
+The command was "prover9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+formulas(assumptions).
+PartialOrder(x,x).
+PartialOrder(x,y) & PartialOrder(y,x) -> x = y.
+PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z).
+PartialOrder(b,x).
+PartialOrder(x,a).
+PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z).
+PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y).
+GLB(x,LUB(y,z)) = LUB(GLB(x,y),GLB(x,z)).
+LUB(x,GLB(y,z)) = GLB(LUB(x,y),LUB(x,z)).
+(all x all y all z (PartialOrder(x,LUB(y,z)) -> PartialOrder(x,y) | PartialOrder(x,z))).
+end_of_list.
+
+formulas(goals).
+(all x all y (PartialOrder(x,y) | PartialOrder(y,x))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+2 PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z) # label(non_clause).  [assumption].
+3 PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z) # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+5 (all x all y all z (PartialOrder(x,LUB(y,z)) -> PartialOrder(x,y) | PartialOrder(x,z))) # label(non_clause).  [assumption].
+6 (all x all y (PartialOrder(x,y) | PartialOrder(y,x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, PartialOrder ]).
+Function symbol precedence:  function_order([ a, b, c1, c2, LUB, GLB ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 12.
+% Level of proof is 3.
+% Maximum clause weight is 11.000.
+% Given clauses 48.
+
+3 PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z) # label(non_clause).  [assumption].
+5 (all x all y all z (PartialOrder(x,LUB(y,z)) -> PartialOrder(x,y) | PartialOrder(x,z))) # label(non_clause).  [assumption].
+6 (all x all y (PartialOrder(x,y) | PartialOrder(y,x))) # label(non_clause) # label(goal).  [goal].
+7 PartialOrder(x,x).  [assumption].
+12 -PartialOrder(LUB(x,y),z) | PartialOrder(x,z).  [clausify(3)].
+13 -PartialOrder(LUB(x,y),z) | PartialOrder(y,z).  [clausify(3)].
+21 -PartialOrder(x,LUB(y,z)) | PartialOrder(x,y) | PartialOrder(x,z).  [clausify(5)].
+22 -PartialOrder(c1,c2).  [deny(6)].
+23 -PartialOrder(c2,c1).  [deny(6)].
+59 -PartialOrder(LUB(c1,x),c2).  [ur(12,b,22,a)].
+65 -PartialOrder(LUB(x,c2),c1).  [ur(13,b,23,a)].
+267 $F.  [ur(21,b,65,a,c,59,a),unit_del(a,7)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=48. Generated=728. Kept=259. proofs=1.
+Usable=39. Sos=126. Demods=15. Limbo=1, Disabled=109. Hints=0.
+Megabytes=0.31.
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 483 exit (max_proofs) Tue Dec  1 05:50:00 2020

@@ -1,0 +1,105 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 795 was started by mickey-ubuntu on DESKTOP-THVT2TT,
+Tue Dec  1 06:31:08 2020
+The command was "prover9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+formulas(assumptions).
+PartialOrder(x,x).
+PartialOrder(x,y) & PartialOrder(y,x) -> x = y.
+PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z).
+PartialOrder(b,x).
+PartialOrder(x,a).
+PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z).
+PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y).
+GLB(x,LUB(y,z)) = LUB(GLB(x,y),GLB(x,z)).
+LUB(x,GLB(y,z)) = GLB(LUB(x,y),LUB(x,z)).
+LUB(x,Complement(x)) = a.
+GLB(x,Complement(x)) = b.
+end_of_list.
+
+formulas(goals).
+(all x all y all z (Complement(x) = y & Complement(x) = z -> y = z)).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+2 PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z) # label(non_clause).  [assumption].
+3 PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z) # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+5 (all x all y all z (Complement(x) = y & Complement(x) = z -> y = z)) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, PartialOrder ]).
+Function symbol precedence:  function_order([ a, b, c1, c2, c3, GLB, LUB, Complement ]).
+After inverse_order: Function symbol precedence:  function_order([ a, b, c1, c2, c3, GLB, LUB, Complement ]).
+Unfolding symbols: c2/0 c3/0.
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(hyper_resolution).  % (nonunit Horn with equality)
+    % set(hyper_resolution) -> set(pos_hyper_resolution).
+  % set(neg_ur_resolution).  % (nonunit Horn with equality)
+  % assign(para_lit_limit, 3).  % (nonunit Horn with equality)
+
+Auto_process settings:  (no changes).
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 7.
+% Level of proof is 3.
+% Maximum clause weight is 4.000.
+% Given clauses 0.
+
+5 (all x all y all z (Complement(x) = y & Complement(x) = z -> y = z)) # label(non_clause) # label(goal).  [goal].
+22 Complement(c1) = c2.  [deny(5)].
+23 c2 = Complement(c1).  [copy(22),flip(a)].
+24 Complement(c1) = c3.  [deny(5)].
+25 c3 = Complement(c1).  [copy(24),flip(a)].
+26 c3 != c2.  [deny(5)].
+27 $F.  [copy(26),rewrite([25(1),23(3)]),xx(a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=18. Kept=17. proofs=1.
+Usable=0. Sos=0. Demods=6. Limbo=17, Disabled=18. Hints=0.
+Megabytes=0.06.
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 795 exit (max_proofs) Tue Dec  1 06:31:08 2020

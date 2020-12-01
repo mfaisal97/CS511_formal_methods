@@ -1,0 +1,131 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 357 was started by mickey-ubuntu on DESKTOP-THVT2TT,
+Tue Dec  1 06:34:14 2020
+The command was "mace4 -c -f f.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file f.in
+
+set(binary_resolution).
+WARNING, Flag not recognized: set(binary_resolution).
+clear(print_initial_clauses).
+WARNING, Flag not recognized: clear(print_initial_clauses).
+clear(print_kept).
+WARNING, Flag not recognized: clear(print_kept).
+clear(print_given).
+WARNING, Flag not recognized: clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+WARNING, Parameter not recognized: assign(stats,none).
+
+formulas(assumptions).
+PartialOrder(x,x).
+PartialOrder(x,y) & PartialOrder(y,x) -> x = y.
+PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z).
+PartialOrder(b,x).
+PartialOrder(x,a).
+PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z).
+PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y).
+GLB(x,LUB(y,z)) = LUB(GLB(x,y),GLB(x,z)).
+LUB(x,GLB(y,z)) = GLB(LUB(x,y),LUB(x,z)).
+PartialOrder(x,y) | PartialOrder(y,x).
+end_of_list.
+
+formulas(goals).
+PartialOrder(GLB(x,y),z) <-> PartialOrder(x,Heyting(y,z)).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+2 PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z) # label(non_clause).  [assumption].
+3 PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z) # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+5 PartialOrder(GLB(x,y),z) <-> PartialOrder(x,Heyting(y,z)) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+PartialOrder(x,x).
+-PartialOrder(x,y) | -PartialOrder(y,x) | y = x.
+-PartialOrder(x,y) | -PartialOrder(y,z) | PartialOrder(x,z).
+PartialOrder(b,x).
+PartialOrder(x,a).
+-PartialOrder(LUB(x,y),z) | PartialOrder(x,z).
+-PartialOrder(LUB(x,y),z) | PartialOrder(y,z).
+PartialOrder(LUB(x,y),z) | -PartialOrder(x,z) | -PartialOrder(y,z).
+-PartialOrder(x,GLB(y,z)) | PartialOrder(x,y).
+-PartialOrder(x,GLB(y,z)) | PartialOrder(x,z).
+PartialOrder(x,GLB(y,z)) | -PartialOrder(x,y) | -PartialOrder(x,z).
+GLB(x,LUB(y,z)) = LUB(GLB(x,y),GLB(x,z)).
+LUB(x,GLB(y,z)) = GLB(LUB(x,y),LUB(x,z)).
+PartialOrder(x,y) | PartialOrder(y,x).
+PartialOrder(GLB(c1,c2),c3) | PartialOrder(c1,Heyting(c2,c3)).
+-PartialOrder(GLB(c1,c2),c3) | -PartialOrder(c1,Heyting(c2,c3)).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== MODEL =================================
+
+interpretation( 2, [number=1, seconds=0], [
+
+        function(a, [ 0 ]),
+
+        function(b, [ 1 ]),
+
+        function(c1, [ 0 ]),
+
+        function(c2, [ 0 ]),
+
+        function(c3, [ 0 ]),
+
+        function(GLB(_,_), [
+			   0, 1,
+			   1, 1 ]),
+
+        function(Heyting(_,_), [
+			   1, 0,
+			   0, 0 ]),
+
+        function(LUB(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        relation(PartialOrder(_,_), [
+			   1, 0,
+			   1, 1 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=88, kept=64.
+Selections=7, assignments=7, propagations=14, current_models=1.
+Rewrite_terms=132, rewrite_bools=83, indexes=14.
+Rules_from_neg_clauses=10, cross_offs=10.
+
+============================== end of statistics =====================
+
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 357 exit (max_models) Tue Dec  1 06:34:14 2020
+The process finished Tue Dec  1 06:34:14 2020

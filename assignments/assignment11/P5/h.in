@@ -1,0 +1,58 @@
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+% For implementation purposes, I used the counter example as in property d
+% The counter model found proves that property b holds
+% mace4 -c -f h.in
+
+formulas(assumptions).
+
+
+% 1: reflexive
+PartialOrder(x,x).
+
+% 2: anti-symmetric
+PartialOrder(x,y) & PartialOrder(y,x) -> x=y.
+
+% 3: transitive
+PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z).
+
+% 4: bottom 
+PartialOrder(b,x).
+
+% 5: top
+PartialOrder(x,a).
+
+% 6: LUB
+PartialOrder(LUB(x,y), z) <-> ( PartialOrder(x, z) & PartialOrder(y, z) ).
+
+% 7: GLB
+PartialOrder(z, GLB(x,y)) <-> ( PartialOrder(z, x) & PartialOrder(z, y) ).
+
+% 8: Distributive_1
+GLB(x, LUB(y,z)) = LUB(GLB(x,y), GLB(x,z)).
+
+% 9: Distributive_2
+LUB(x, GLB(y,z)) = GLB(LUB(x,y), LUB(x,z)).
+
+
+end_of_list.
+formulas(goals).
+
+
+% 10: -(HEYTING -> property h) ... counter exampled and therefore, property holds.
+- (
+    (all x all y all z (PartialOrder(GLB(x,y), z) <-> PartialOrder(x, Heyting(y,z))) )
+    ->
+    ( all x all y all z (
+        Heyting(x, GLB(y,z)) = GLB( Heyting(x,y), Heyting(x,z)) 
+        &
+        PartialOrder(y, Heyting( x, y))
+    ))).
+    
+
+end_of_list.

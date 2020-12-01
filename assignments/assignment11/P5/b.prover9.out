@@ -1,0 +1,157 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 435 was started by mickey-ubuntu on DESKTOP-THVT2TT,
+Tue Dec  1 05:44:06 2020
+The command was "prover9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+formulas(assumptions).
+PartialOrder(x,x).
+PartialOrder(x,y) & PartialOrder(y,x) -> x = y.
+PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z).
+PartialOrder(b,x).
+PartialOrder(x,a).
+PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z).
+PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y).
+GLB(x,LUB(y,z)) = LUB(GLB(x,y),GLB(x,z)).
+LUB(x,GLB(y,z)) = GLB(LUB(x,y),LUB(x,z)).
+end_of_list.
+
+formulas(goals).
+(all x all y LUB(x,y) = LUB(y,x)).
+(all x all y GLB(x,y) = GLB(y,x)).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+2 PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z) # label(non_clause).  [assumption].
+3 PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z) # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+5 (all x all y LUB(x,y) = LUB(y,x)) # label(non_clause) # label(goal).  [goal].
+6 (all x all y GLB(x,y) = GLB(y,x)) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Auto_denials:
+  % assign(max_proofs, 2).  % (Horn set with more than one neg. clause)
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, PartialOrder ]).
+Function symbol precedence:  function_order([ a, b, c1, c2, c3, c4, GLB, LUB ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(hyper_resolution).  % (nonunit Horn with equality)
+    % set(hyper_resolution) -> set(pos_hyper_resolution).
+  % set(neg_ur_resolution).  % (nonunit Horn with equality)
+  % assign(para_lit_limit, 3).  % (nonunit Horn with equality)
+
+Auto_process settings:  (no changes).
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+% Operation LUB is commutative; C redundancy checks enabled.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.03 (+ 0.00) seconds.
+% Length of proof is 14.
+% Level of proof is 5.
+% Maximum clause weight is 11.000.
+% Given clauses 52.
+
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+3 PartialOrder(LUB(x,y),z) <-> PartialOrder(x,z) & PartialOrder(y,z) # label(non_clause).  [assumption].
+5 (all x all y LUB(x,y) = LUB(y,x)) # label(non_clause) # label(goal).  [goal].
+7 PartialOrder(x,x).  [assumption].
+8 -PartialOrder(x,y) | -PartialOrder(y,x) | y = x.  [clausify(1)].
+12 -PartialOrder(LUB(x,y),z) | PartialOrder(x,z).  [clausify(3)].
+13 -PartialOrder(LUB(x,y),z) | PartialOrder(y,z).  [clausify(3)].
+14 PartialOrder(LUB(x,y),z) | -PartialOrder(x,z) | -PartialOrder(y,z).  [clausify(3)].
+21 LUB(c2,c1) != LUB(c1,c2).  [deny(5)].
+28 PartialOrder(x,LUB(x,y)).  [resolve(12,a,7,a)].
+29 PartialOrder(x,LUB(y,x)).  [resolve(13,a,7,a)].
+94 PartialOrder(LUB(x,y),LUB(y,x)).  [hyper(14,b,29,a,c,28,a)].
+648 LUB(x,y) = LUB(y,x).  [hyper(8,a,94,a,b,94,a)].
+649 $F.  [resolve(648,a,21,a)].
+
+============================== end of proof ==========================
+% Redundant proof: 651 $F.  [resolve(650,a,7,a)].
+% Redundant proof: 654 $F.  [back_rewrite(21),rewrite([648(3)]),xx(a)].
+
+% Disable descendants (x means already disabled):
+ 21x 650
+
+% Operation GLB is commutative; C redundancy checks enabled.
+
+============================== PROOF =================================
+
+% Proof 2 at 0.04 (+ 0.00) seconds.
+% Length of proof is 14.
+% Level of proof is 5.
+% Maximum clause weight is 11.000.
+% Given clauses 60.
+
+1 PartialOrder(x,y) & PartialOrder(y,x) -> x = y # label(non_clause).  [assumption].
+4 PartialOrder(z,GLB(x,y)) <-> PartialOrder(z,x) & PartialOrder(z,y) # label(non_clause).  [assumption].
+6 (all x all y GLB(x,y) = GLB(y,x)) # label(non_clause) # label(goal).  [goal].
+7 PartialOrder(x,x).  [assumption].
+8 -PartialOrder(x,y) | -PartialOrder(y,x) | y = x.  [clausify(1)].
+15 -PartialOrder(x,GLB(y,z)) | PartialOrder(x,y).  [clausify(4)].
+16 -PartialOrder(x,GLB(y,z)) | PartialOrder(x,z).  [clausify(4)].
+17 PartialOrder(x,GLB(y,z)) | -PartialOrder(x,y) | -PartialOrder(x,z).  [clausify(4)].
+22 GLB(c4,c3) != GLB(c3,c4).  [deny(6)].
+38 PartialOrder(GLB(x,y),x).  [resolve(15,a,7,a)].
+39 PartialOrder(GLB(x,y),y).  [resolve(16,a,7,a)].
+231 PartialOrder(GLB(x,y),GLB(y,x)).  [hyper(17,b,39,a,c,38,a)].
+1034 GLB(x,y) = GLB(y,x).  [hyper(8,a,231,a,b,231,a)].
+1035 $F.  [resolve(1034,a,22,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=60. Generated=2716. Kept=1024. proofs=2.
+Usable=48. Sos=601. Demods=20. Limbo=48, Disabled=341. Hints=0.
+Megabytes=1.12.
+User_CPU=0.04, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 2 proofs.
+
+Process 435 exit (max_proofs) Tue Dec  1 05:44:06 2020

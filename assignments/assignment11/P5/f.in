@@ -1,0 +1,48 @@
+set(binary_resolution).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+assign(max_seconds,10).
+assign(stats,none).
+
+% mace4 -c -f f.in
+
+formulas(assumptions).
+
+% 1: reflexive
+PartialOrder(x,x).
+
+% 2: anti-symmetric
+PartialOrder(x,y) & PartialOrder(y,x) -> x=y.
+
+% 3: transitive
+PartialOrder(x,y) & PartialOrder(y,z) -> PartialOrder(x,z).
+
+% 4: bottom 
+PartialOrder(b,x).
+
+% 5: top
+PartialOrder(x,a).
+
+% 6: LUB
+PartialOrder(LUB(x,y), z) <-> ( PartialOrder(x, z) & PartialOrder(y, z) ).
+
+% 7: GLB
+PartialOrder(z, GLB(x,y)) <-> ( PartialOrder(z, x) & PartialOrder(z, y) ).
+
+% 8: Distributive_1
+GLB(x, LUB(y,z)) = LUB(GLB(x,y), GLB(x,z)).
+
+% 9: Distributive_2
+LUB(x, GLB(y,z)) = GLB(LUB(x,y), LUB(x,z)).
+
+PartialOrder(x, y) | PartialOrder(y, x).
+
+end_of_list.
+formulas(goals).
+
+% Property a:
+% 10: HEYTING
+(PartialOrder(GLB(x,y), z) <-> PartialOrder(x, Heyting(y,z))).
+
+end_of_list.
