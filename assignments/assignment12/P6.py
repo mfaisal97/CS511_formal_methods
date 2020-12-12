@@ -4,50 +4,19 @@ from random import randrange
 
 import re
 
-# python3 P5.py -n 4
-# Check the following grid for size:      4
-# ___     _R_     ___     ___
-# ___     ___     ___     _Q_
-# _R_     ___     ___     ___
-# ___     ___     _R_     ___
+# The code checks if this premise holds for each condition:
+# Cond[0 : i-1, i+1 : n]   -> Cond[i]
 
-# python3 P5.py -n 5
-# Check the following grid for size:      5
-# ___     _R_     ___     ___     ___
-# ___     ___     _R_     ___     ___
-# ___     ___     ___     ___     _Q_
-# _R_     ___     ___     ___     ___
-# ___     ___     ___     _R_     ___
-
-# python3 P5.py -n 6
-# Check the following grid for size:      6
-# ___     _R_     ___     ___     ___     ___
-# ___     ___     ___     ___     _Q_     ___
-# _R_     ___     ___     ___     ___     ___
-# ___     ___     ___     ___     ___     _Q_
-# ___     ___     _R_     ___     ___     ___
-# ___     ___     ___     _R_     ___     ___
-
-# python3 P5.py -n 7
-# Check the following grid for size:      7
-# ___     _R_     ___     ___     ___     ___     ___
-# _R_     ___     ___     ___     ___     ___     ___
-# ___     ___     ___     _R_     ___     ___     ___
-# ___     ___     ___     ___     ___     _R_     ___
-# ___     ___     _Q_     ___     ___     ___     ___
-# ___     ___     ___     ___     _R_     ___     ___
-# ___     ___     ___     ___     ___     ___     _Q_
-
-# python3 P5.py -n 8
-# Check the following grid for size:      8
-# ___     _R_     ___     ___     ___     ___     ___     ___
-# ___     ___     _R_     ___     ___     ___     ___     ___
-# ___     ___     ___     _R_     ___     ___     ___     ___
-# ___     ___     ___     ___     ___     ___     _R_     ___
-# ___     ___     ___     ___     ___     _R_     ___     ___
-# ___     ___     ___     ___     ___     ___     ___     _Q_
-# _R_     ___     ___     ___     ___     ___     ___     ___
-# ___     ___     ___     ___     _Q_     ___     ___     ___
+# python3 P5.py -n 15
+# Condition 1 is not necessary:   True
+# Condition 2 is not necessary:   True
+# Condition 3 is not necessary:   True
+# Condition 4 is not necessary:   True
+# Condition 5 is not necessary:   True
+# Condition 6 is not necessary:   True
+# Condition 7 is not necessary:   True
+# Condition 8 is not necessary:   True
+# Condition 9 is not necessary:   True
 
 
 # return the places of queens and rooks
@@ -172,9 +141,17 @@ def solveQueensRooks(rows_num, cols_num, queens_rows, rooks_rows=None):
                 Cond_9, Implies(queens[i][j], no_other_queen_rook_in_diagonal))
 
     s = Optimize()
-    s.add(
-        And(Cond_1, Cond_2, Cond_3, Cond_4, Cond_5, Cond_6, Cond_7, Cond_8,
-            Cond_9))
+
+    unncessary_condition = []
+    conds = [Cond_1, Cond_2, Cond_3, True, True, True, True, Cond_8, Cond_9]
+    for i in range(9):
+        unncessary_condition.append(Bool("Unnecessary_COND_" + str(i) + "_"))
+        implies_premise = True
+        for j in range(9):
+            if j != i:
+                implies_premise = And(implies_premise, conds[j])
+        s.add(unncessary_condition[i] == Implies(implies_premise, conds[i]))
+
     s.check()
     ans = s.model()
 
@@ -226,6 +203,7 @@ def main():
                max_lines=1000000,
                max_depth=10000000,
                max_visited=1000000)
+
     n = 3
     my_parser = argparse.ArgumentParser()
     my_parser.add_argument('-n',
@@ -242,32 +220,23 @@ def main():
     res = solveQueensRooks(n, n, queens_rows)
 
     # Extracting grid
-    track_cells = []
-    for i in range(n):
-        track_cells.append([])
-        for j in range(n):
-            track_cells[i].append("_")
+    track_conds = []
+    for i in range(9):
+        track_conds.append("Condition " + str(i + 1) + " is not necessary: \t")
 
     for var_sentence in str(res).split(","):
-        var_sentence_split = var_sentence.split("_")
-        i = int(var_sentence_split[1])
-        j = int(var_sentence_split[2])
+        if "Unnecessary_COND_" in var_sentence:
+            var_sentence_split = var_sentence.split("_")
+            print(var_sentence_split)
+            i = int(var_sentence_split[2])
 
-        if "True" in var_sentence:
-            if "Queen" in var_sentence:
-                track_cells[i][j] += "Q"
-            if "Rook" in var_sentence:
-                track_cells[i][j] += "R"
-        else:
-            track_cells[i][j] += "_"
+            if "True" in var_sentence:
+                track_conds[i] += "True"
+            else:
+                track_conds[i] += "False"
 
-    str_out = "Check the following grid for size:\t" + str(n) + "\n"
-    for i in range(n):
-        for j in range(n):
-            str_out += (track_cells[i][j] + "\t")
-        str_out += "\n"
-
-    print(str_out)
+    for cond in track_conds:
+        print(cond)
 
 
 main()
