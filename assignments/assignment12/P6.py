@@ -4,31 +4,37 @@ from random import randrange
 
 import re
 
-# The code checks if this premise holds for each condition:
-# Cond[0 : i-1, i+1 : n]   -> Cond[i]
+# The code checks if this condition holds for each condition:
+# Whether there is exist a model where 8 conditions are satified
+# and at the same time the ninth condition is violated
+# when the check returns unsat, the condition is marked as not necessary
+# Below I used 15 (base case for infinite model)
+# (Cond[0 : i-1, i+1 : n]) ^ (-Cond[i])
 
 # python3 P5.py -n 15
-# Condition 1 is not necessary:   True
-# Condition 2 is not necessary:   True
-# Condition 3 is not necessary:   True
+# Condition 1 is not necessary:   False
+# Condition 2 is not necessary:   False
+# Condition 3 is not necessary:   False
 # Condition 4 is not necessary:   True
-# Condition 5 is not necessary:   True
+# Condition 5 is not necessary:   False
 # Condition 6 is not necessary:   True
-# Condition 7 is not necessary:   True
-# Condition 8 is not necessary:   True
-# Condition 9 is not necessary:   True
+# Condition 7 is not necessary:   False
+# Condition 8 is not necessary:   False
+# Condition 9 is not necessary:   False
 
 
-# return the places of queens and rooks
-def solveQueensRooks(rows_num, cols_num, queens_rows, rooks_rows=None):
+# returns conditions of a specific problem
+def getConditions(rows_num, cols_num, queens_rows, rooks_rows=None, ind=0):
     rooks = []
     queens = []
     for i in range(rows_num):
         rooks.append([])
         queens.append([])
         for j in range(cols_num):
-            rooks[i].append(Bool("Rook_" + str(i) + "_" + str(j) + "_"))
-            queens[i].append(Bool("Queen_" + str(i) + "_" + str(j) + "_"))
+            rooks[i].append(
+                Bool(str(ind) + "_Rook_" + str(i) + "_" + str(j) + "_"))
+            queens[i].append(
+                Bool(str(ind) + "_Queen_" + str(i) + "_" + str(j) + "_"))
 
     # 1.  There is a queen on each of the selected rows:
     Cond_1 = True
@@ -140,22 +146,30 @@ def solveQueensRooks(rows_num, cols_num, queens_rows, rooks_rows=None):
             Cond_9 = And(
                 Cond_9, Implies(queens[i][j], no_other_queen_rook_in_diagonal))
 
-    s = Optimize()
+    return [
+        Cond_1, Cond_2, Cond_3, Cond_4, Cond_5, Cond_6, Cond_7, Cond_8, Cond_9
+    ]
+
+
+# return the places of queens and rooks
+def solveQueensRooks(rows_num, cols_num, queens_rows, rooks_rows=None):
 
     unncessary_condition = []
-    conds = [Cond_1, Cond_2, Cond_3, True, True, True, True, Cond_8, Cond_9]
     for i in range(9):
-        unncessary_condition.append(Bool("Unnecessary_COND_" + str(i) + "_"))
+        s = Optimize()
+        conds = getConditions(rows_num, cols_num, queens_rows, rooks_rows, i)
+        # unncessary_condition.append(Bool("Unnecessary_COND_" + str(i) + "_"))
         implies_premise = True
         for j in range(9):
             if j != i:
                 implies_premise = And(implies_premise, conds[j])
-        s.add(unncessary_condition[i] == Implies(implies_premise, conds[i]))
 
-    s.check()
-    ans = s.model()
+        s.add(And(implies_premise, Not(conds[i])))
 
-    return ans
+        print(s.check())
+        unncessary_condition.append(str(s.check()))
+
+    return unncessary_condition
 
 
 # Generate random subset from :
@@ -223,17 +237,20 @@ def main():
     track_conds = []
     for i in range(9):
         track_conds.append("Condition " + str(i + 1) + " is not necessary: \t")
+        if res[i] == "sat":
+            track_conds[i] += "False"
+        else:
+            track_conds[i] += "True"
 
-    for var_sentence in str(res).split(","):
-        if "Unnecessary_COND_" in var_sentence:
-            var_sentence_split = var_sentence.split("_")
-            print(var_sentence_split)
-            i = int(var_sentence_split[2])
+    # for var_sentence in str(res).split(","):
+    #     if "Unnecessary_COND_" in var_sentence:
+    #         var_sentence_split = var_sentence.split("_")
+    #         i = int(var_sentence_split[2])
 
-            if "True" in var_sentence:
-                track_conds[i] += "True"
-            else:
-                track_conds[i] += "False"
+    #         if "True" in var_sentence:
+    #             track_conds[i] += "True"
+    #         else:
+    #             track_conds[i] += "False"
 
     for cond in track_conds:
         print(cond)
