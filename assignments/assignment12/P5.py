@@ -21,12 +21,12 @@ import re
 
 # python3 P5.py -n 6
 # Check the following grid for size:      6
+# ___     ___     _Q_     ___     ___     ___
+# ___     ___     ___     ___     ___     _R_
+# ___     ___     ___     _Q_     ___     ___
 # ___     _R_     ___     ___     ___     ___
-# ___     ___     ___     ___     _Q_     ___
 # _R_     ___     ___     ___     ___     ___
-# ___     ___     ___     ___     ___     _Q_
-# ___     ___     _R_     ___     ___     ___
-# ___     ___     ___     _R_     ___     ___
+# ___     ___     ___     ___     _R_     ___
 
 # python3 P5.py -n 7
 # Check the following grid for size:      7
@@ -169,7 +169,8 @@ def solveQueensRooks(rows_num, cols_num, queens_rows, rooks_rows=None):
                             no_other_queen_rook_in_anti_diagonal,
                             Not(rooks[k][l]), Not(queens[k][l]))
             Cond_9 = And(
-                Cond_9, Implies(queens[i][j], no_other_queen_rook_in_diagonal))
+                Cond_9,
+                Implies(queens[i][j], no_other_queen_rook_in_anti_diagonal))
 
     s = Optimize()
     s.add(
@@ -250,16 +251,17 @@ def main():
 
     for var_sentence in str(res).split(","):
         var_sentence_split = var_sentence.split("_")
-        i = int(var_sentence_split[1])
-        j = int(var_sentence_split[2])
+        if len(var_sentence_split) > 3:
+            i = int(var_sentence_split[1])
+            j = int(var_sentence_split[2])
 
-        if "True" in var_sentence:
-            if "Queen" in var_sentence:
-                track_cells[i][j] += "Q"
-            if "Rook" in var_sentence:
-                track_cells[i][j] += "R"
-        else:
-            track_cells[i][j] += "_"
+            if "True" in var_sentence:
+                if "Queen" in var_sentence:
+                    track_cells[i][j] += "Q"
+                if "Rook" in var_sentence:
+                    track_cells[i][j] += "R"
+            else:
+                track_cells[i][j] += "_"
 
     str_out = "Check the following grid for size:\t" + str(n) + "\n"
     for i in range(n):

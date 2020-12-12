@@ -144,7 +144,8 @@ def getConditions(rows_num, cols_num, queens_rows, rooks_rows=None, ind=0):
                             no_other_queen_rook_in_anti_diagonal,
                             Not(rooks[k][l]), Not(queens[k][l]))
             Cond_9 = And(
-                Cond_9, Implies(queens[i][j], no_other_queen_rook_in_diagonal))
+                Cond_9,
+                Implies(queens[i][j], no_other_queen_rook_in_anti_diagonal))
 
     return [
         Cond_1, Cond_2, Cond_3, Cond_4, Cond_5, Cond_6, Cond_7, Cond_8, Cond_9
@@ -166,7 +167,6 @@ def solveQueensRooks(rows_num, cols_num, queens_rows, rooks_rows=None):
 
         s.add(And(implies_premise, Not(conds[i])))
 
-        print(s.check())
         unncessary_condition.append(str(s.check()))
 
     return unncessary_condition
